@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../theme/app_theme.dart';
 import 'search_providers_screen.dart';
+import 'login_screen.dart';
 import 'service_providers_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -126,20 +128,8 @@ class HomeScreen extends StatelessWidget {
       'icon': Icons.electrical_services,
     },
     {
-      'name': 'Animal Clinic',
-      'icon': Icons.pets_outlined,
-    },
-    {
       'name': 'Chicken Booking, Feeds and Drugs',
       'icon': Icons.egg_outlined,
-    },
-    {
-      'name': 'Diagnostic Centre',
-      'icon': Icons.local_hospital_outlined,
-    },
-    {
-      'name': 'Hospital',
-      'icon': Icons.local_hospital,
     },
     {
       'name': 'Building Materials',
@@ -156,10 +146,6 @@ class HomeScreen extends StatelessWidget {
     {
       'name': 'Cement Seller',
       'icon': Icons.foundation,
-    },
-    {
-      'name': 'Pharmacy',
-      'icon': Icons.local_pharmacy,
     },
     {
       'name': 'Fabrics (Shadda/Yadi) Dealer',
@@ -190,10 +176,6 @@ class HomeScreen extends StatelessWidget {
       'icon': Icons.engineering_outlined,
     },
     {
-      'name': 'Construction Firms',
-      'icon': Icons.construction,
-    },
-    {
       'name': 'Real Estate Agent',
       'icon': Icons.real_estate_agent_outlined,
     },
@@ -210,7 +192,7 @@ class HomeScreen extends StatelessWidget {
       'icon': Icons.face_retouching_natural,
     },
     {
-      'name': 'Printing, Writing and Reading Materials (Books)',
+      'name': 'Writing and Reading Materials (Books)',
       'icon': Icons.menu_book_outlined,
     },
     {
@@ -302,14 +284,45 @@ class HomeScreen extends StatelessWidget {
       'icon': Icons.spa_outlined,
     },
     {
-      'name': 'School',
-      'icon': Icons.school_outlined,
-    },
-    {
       'name': 'Other Services',
       'icon': Icons.more_horiz_rounded,
     },
   ];
+
+  Future<void> _logout(BuildContext context) async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Log out?'),
+        content: const Text('Are you sure you want to log out of Gida Services?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton.icon(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            icon: const Icon(Icons.logout_rounded),
+            label: const Text('Log out'),
+          ),
+        ],
+      ),
+    );
+    if (shouldLogout != true) return;
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (!context.mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false,
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not log out. Please try again.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -409,6 +422,11 @@ class HomeScreen extends StatelessWidget {
                   Icons.search_rounded,
                   color: AppColors.navy,
                 ),
+              ),
+              IconButton(
+                tooltip: 'Log out',
+                onPressed: () => _logout(context),
+                icon: const Icon(Icons.logout_rounded, color: AppColors.navy),
               ),
               const SizedBox(width: 8),
             ],

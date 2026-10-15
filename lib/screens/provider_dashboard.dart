@@ -651,7 +651,7 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'Kuda Microfinance Bank',
+                  'Moniepoint Microfinance Bank',
                   style: TextStyle(
                     color: AppColors.muted,
                     fontSize: 12,
@@ -659,7 +659,7 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                 ),
                 SizedBox(height: 3),
                 SelectableText(
-                  '2082918233',
+                  '3005035357',
                   style: TextStyle(
                     color: AppColors.primary,
                     fontSize: 18,

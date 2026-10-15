@@ -358,8 +358,8 @@ class _RequestScreenState extends State<RequestScreen>
               ),
               const SizedBox(height: 18),
               _paymentDetail('Amount', '₦$_platformFee'),
-              _paymentDetail('Bank', 'Kuda Microfinance Bank'),
-              _paymentDetail('Account number', '2082918233'),
+              _paymentDetail('Bank', 'Moniepoint Microfinance Bank'),
+              _paymentDetail('Account number', '3005035357'),
               const SizedBox(height: 14),
               Text(
                 'Only tap “I’ve Paid” after completing the transfer.',
@@ -744,6 +744,11 @@ class _RequestScreenState extends State<RequestScreen>
           style: TextStyle(fontWeight: FontWeight.w800),
         ),
         actions: [
+          IconButton(
+            tooltip: 'Log out',
+            icon: const Icon(Icons.logout_rounded),
+            onPressed: _logout,
+          ),
           PopupMenuButton<String>(
             tooltip: 'More',
             onSelected: (value) {
